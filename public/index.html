@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Research deployment incidents with inspectable sources.">
+  <title>Rollout Trace · Incident research desk</title>
+  <link rel="icon" href="/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <a class="brand" href="/" aria-label="Rollout Trace home">
+        <img src="/mark.svg" width="38" height="38" alt="">
+        <span>Rollout<span class="brand-accent">Trace</span><small>INCIDENT RESEARCH DESK</small></span>
+      </a>
+      <div class="status-pill" id="connection" role="status"><span class="signal"></span>Checking providers</div>
+    </div>
+  </header>
+  <main class="shell workspace">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-mark"></span> ON-CALL RESEARCH</p>
+        <h1 id="page-title">What changed<br> in this rollout?</h1>
+        <p class="intro">Investigate a deployment symptom, compare the docs, and hand off a report your team can verify.</p>
+      </div>
+      <div class="hero-graphic" aria-hidden="true">
+        <svg viewBox="0 0 460 200" fill="none" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <pattern id="dots" width="19" height="19" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1" fill="#456166"/></pattern>
+            <linearGradient id="wave" x1="0" y1="0" x2="430" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#328274" stop-opacity=".15"/><stop offset=".45" stop-color="#86E9CB"/><stop offset="1" stop-color="#328274" stop-opacity=".22"/></linearGradient>
+          </defs>
+          <rect x="0" y="0" width="460" height="200" fill="url(#dots)" opacity=".65"/>
+          <path d="M0 126H108l18-18 16 18h33l20-31 20 31h23l28-69 29 69h39l21-21 21 21h84" stroke="url(#wave)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M266 48V160" stroke="#73BDAA" stroke-dasharray="3 6" opacity=".45"/>
+          <circle cx="266" cy="57" r="11" fill="#8DEBCA" opacity=".14"/>
+          <circle cx="266" cy="57" r="4" fill="#8DEBCA"/>
+          <path d="M268 45l19-17h69" stroke="#658D88"/>
+          <text x="291" y="21" fill="#8DEBCA" font-size="10" font-family="monospace" letter-spacing="2">ROLLOUT</text>
+          <text x="20" y="178" fill="#7F9A9E" font-size="9" font-family="monospace" letter-spacing="1.5">OBSERVED SIGNAL</text>
+          <text x="316" y="178" fill="#7F9A9E" font-size="9" font-family="monospace" letter-spacing="1.5">EVIDENCE WINDOW</text>
+        </svg>
+      </div>
+    </section>
+
+    <div class="layout">
+      <section class="panel input-panel" aria-labelledby="question-title">
+        <div class="panel-label"><span class="index">01</span><span>INCIDENT INPUT</span></div>
+        <h2 id="question-title">Start an investigation</h2>
+        <form id="question-form">
+          <div class="field-top">
+            <label for="question">What are you seeing?</label>
+            <button type="button" class="text-button" id="load-example">Load example</button>
+          </div>
+          <textarea id="question" name="question" maxlength="900" rows="6" aria-describedby="question-help" placeholder="After upgrading a runtime, our database connections fail with a certificate error. What changed?"></textarea>
+          <div class="field-help">
+            <span id="question-help">Use public error messages and version numbers.</span>
+            <span id="char-count">0 / 900</span>
+          </div>
+          <button id="investigate" type="submit" class="button button-primary" disabled>
+            <span>Investigate live</span><span class="button-arrow" aria-hidden="true">↗</span>
+          </button>
+          <button id="replay" type="button" class="button button-secondary" disabled>
+            <span>Run example replay</span><span class="button-arrow" aria-hidden="true">▷</span>
+          </button>
+          <p class="form-status" id="form-status">Checking Nebius Token Factory and Tavily configuration.</p>
+          <p class="form-error" id="form-error" role="alert" hidden></p>
+        </form>
+        <details class="trace" id="trace" hidden>
+          <summary><span>Investigation steps</span><span class="trace-count" id="trace-count"></span></summary>
+          <ol id="trace-list" class="trace-list" aria-live="polite"></ol>
+        </details>
+      </section>
+
+      <section class="panel report-panel" aria-label="Research report" id="report-panel">
+        <div class="report-top">
+          <div class="panel-label"><span class="index">02</span><span>RESEARCH REPORT</span></div>
+          <button id="export" class="text-button" type="button" hidden>Download report ↓</button>
+        </div>
+        <div class="report-placeholder" id="placeholder">
+          <span class="placeholder-icon" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none"><path d="M11 6h13l6 6v22H11zM24 6v7h6M16 19h9m-9 5h9m-9 5h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <h2 id="report-title">Evidence will appear here</h2>
+          <p>Run a question to see what the sources say, what remains uncertain, and what to check next.</p>
+        </div>
+        <div class="report-body" id="report" aria-live="polite" hidden></div>
+      </section>
+    </div>
+    <footer class="footer">
+      <span>Rollout Trace <span class="footer-divider">/</span> ODSC × Nebius Hackathon</span>
+      <span>Nebius Token Factory <span class="footer-divider">+</span> Tavily Search</span>
+    </footer>
+  </main>
+</body>
+</html>
